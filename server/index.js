@@ -1,5 +1,6 @@
 import express from "express";
 import cors from 'cors'; // Cross origin ressource sharing CORS, enables the frontend to make requests from a different url.
+import { searchConnection  } from "./navigator.js";
 
 // Init express app
 const app = express();
@@ -10,11 +11,11 @@ app.use(express.json());
 // HTTP Endpoint 
 app.get('', (req, res) => {
 
-    const start = req.query.start?.toLowerCase() || '';
-    const dest = req.query.dest?.toLowerCase() || '';
+    const start = req.query.start || '';
+    const dest = req.query.dest || '';
 
     // TODO: Business Logic
-    const results = start + dest;
+    const results = searchConnection(start, dest); //start + dest;
 
     res.send(results);
 });
