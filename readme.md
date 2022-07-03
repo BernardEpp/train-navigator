@@ -18,6 +18,8 @@ Open browser and type: http://localhost:3000
 
 ## Run Backend
 
+Make sure you have NodeJS installed.
+
 ```
     cd server
     node .
@@ -36,7 +38,7 @@ The frontend was setup with vite by typing:
  npm install
 ```
 
-The backend was setup to use express
+The backend was setup to use express (and nodejs).
 
 ```
     cd server
