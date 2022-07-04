@@ -93,7 +93,7 @@ function dfs(start, target, visited = new Set()) {
 
 function reconstructPath(start, target){
     console.log('reconstruct path');
-    const path = [target];
+   const path = [target];
 
     let node = target;
     while (node !== start) {
@@ -106,7 +106,7 @@ function reconstructPath(start, target){
 
 // Search for train connections between start and end point.
 function searchConnection(start, end) {
- 
+    results = [];
 
     // Check for sanitized input
     if (!cities.includes(start) || !cities.includes(end)) {
