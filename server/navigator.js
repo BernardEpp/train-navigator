@@ -93,7 +93,7 @@ function dfs(start, target, visited = new Set()) {
 
 function reconstructPath(start, target){
     console.log('reconstruct path');
-   const path = [target];
+    const path = [target];
 
     let node = target;
     while (node !== start) {
@@ -106,11 +106,13 @@ function reconstructPath(start, target){
 
 // Search for train connections between start and end point.
 function searchConnection(start, end) {
-    results = [];
+     results = [];
 
     // Check for sanitized input
     if (!cities.includes(start) || !cities.includes(end)) {
-        return results;
+        console.log('Could not search for connection. Start or End City is not available.');
+        console.log('Start' + start + 'End: ' + end);
+        return [];
     }
   
     // Run search / traverse
