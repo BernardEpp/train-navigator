@@ -33,10 +33,9 @@ function App() {
       <button onClick={() => searchConnection(start, end)}>Search</button>
 
       <ul>
-        {connections}
-        {/* {connections.map((cities) => (
-          <TrainConnection cities={cities}></TrainConnection>
-        ))} */}
+        {connections.map((route, index) => (
+          <TrainConnection key={index} cities={route}></TrainConnection>
+        ))}
 
         {connections.length === 0 && "No connections found."}
       </ul>
