@@ -1,5 +1,4 @@
 import { expect } from "chai";
-import { request } from "request";
 import { searchConnection } from "../navigator.js";
 
 describe("test framework works", () => {
