@@ -1,22 +1,24 @@
-
-// DATA 
-const cities = 'Frankfurt Mannheim Würzburg Stuttgart Nürnberg Kassel Karlsruhe Erfurt Augsburg München'.split(' ');
+// DATA
+const cities =
+  "Frankfurt Mannheim Würzburg Stuttgart Nürnberg Kassel Karlsruhe Erfurt Augsburg München".split(
+    " "
+  );
 
 const routes = [
-    ['Frankfurt', 'Mannheim'],
-    ['Frankfurt', 'Würzburg'],
-    ['Stuttgart', 'Mannheim'],
-    ['Frankfurt', 'Kassel'],
-    ['Karlsruhe', 'Mannheim'],
-    ['Stuttgart', 'Karlsruhe'],
-    ['Stuttgart', 'Augsburg'],
-    ['Augsburg', 'München'],
-    ['Kassel', 'Würzburg'],
-    ['Würzburg', 'Nürnberg'],
-    ['München', 'Nürnberg'],
-    ['München', 'Würzburg'],
-    ['Nürnberg', 'Erfurt'],
-    ['Frankfurt', 'Erfurt'],
+  ["Frankfurt", "Mannheim"],
+  ["Frankfurt", "Würzburg"],
+  ["Stuttgart", "Mannheim"],
+  ["Frankfurt", "Kassel"],
+  ["Karlsruhe", "Mannheim"],
+  ["Stuttgart", "Karlsruhe"],
+  ["Stuttgart", "Augsburg"],
+  ["Augsburg", "München"],
+  ["Kassel", "Würzburg"],
+  ["Würzburg", "Nürnberg"],
+  ["München", "Nürnberg"],
+  ["München", "Würzburg"],
+  ["Nürnberg", "Erfurt"],
+  ["Frankfurt", "Erfurt"],
 ];
 
 // The graph
@@ -28,115 +30,106 @@ let parents = new Map();
 // The search results.
 let results = [];
 
-// Add Node 
+// Add Node
 function addNode(city) {
-    adjacencyList.set(city, []);
-} 
+  adjacencyList.set(city, []);
+}
 
 function addEdge(origin, destination) {
-    adjacencyList.get(origin).push(destination);
-    adjacencyList.get(destination).push(origin);
+  adjacencyList.get(origin).push(destination);
+  adjacencyList.get(destination).push(origin);
 }
 
 // Create the graph
 cities.forEach(addNode);
-routes.forEach(route => addEdge(...route));
+routes.forEach((route) => addEdge(...route));
 
 // Breadth-first search (BFS)
 function bfs(start, target) {
+  const visited = new Set();
 
-    const visited = new Set();
+  const queue = [start]; // first-in, first-out data structure of cities to look at
 
-    const queue = [start]; // first-in, first-out data structure of cities to look at
-  
-    while (queue.length > 0) {
-       
-        const city = queue.shift(); // look at the first element and remove it from queue
-        const connections = adjacencyList.get(city);
+  while (queue.length > 0) {
+    const city = queue.shift(); // look at the first element and remove it from queue
+    const connections = adjacencyList.get(city);
 
-        for (const connection of connections) {
-            
-            if (connection === target) {
-                console.log('found target');
-                parents.set(connection, city);
-                reconstructPath(start, target);
-            }
+    for (const connection of connections) {
+      if (connection === target) {
+        console.log("found target");
+        parents.set(connection, city);
+        reconstructPath(start, target);
+        break;
+      }
 
-            if (!visited.has(connection)) {
-                visited.add(connection);
-                queue.push(connection);
-                console.log(connection);
-                parents.set(connection, city);
-            }
-        }
+      if (!visited.has(connection)) {
+        visited.add(connection);
+        queue.push(connection);
+        // console.log(connection);
+        parents.set(connection, city);
+      }
     }
+  }
 }
 
 // Depth-first search (DFS) //TODO: Debug this and reconstruct the path of the results
 function dfs(start, target, visited = new Set()) {
-    console.log(start);
-    visited.add(start);
-  
-    const connections = adjacencyList.get(start);
+  console.log(start);
+  visited.add(start);
 
-    for (const connection of connections) {
-        if (connection === target) {
-            console.log('found target');
-            return;
-        }
-    
-        if (!visited.has(connection)) {
-            dfs(connection, target, visited);
-        }
+  const connections = adjacencyList.get(start);
+
+  for (const connection of connections) {
+    if (connection === target) {
+      console.log("found target");
+      return;
     }
+
+    if (!visited.has(connection)) {
+      dfs(connection, target, visited);
+    }
+  }
 }
 
-function reconstructPath(start, target){
-    console.log('reconstruct path');
-    const path = [target];
-   
-    let node = target;
-    while (node !== start) {
-        let parent = parents.get(node);
-        path.push(parent);
-        node = parent;
-    }
-    results.push(path.reverse());
-    
+function reconstructPath(start, target) {
+  const path = [target];
+
+  let node = target;
+  while (node !== start) {
+    let parent = parents.get(node);
+    path.push(parent);
+    node = parent;
+  }
+  console.log("found path to target:");
+  console.log(path);
+  results.push(path.reverse());
 }
 
 // Search for train connections between start and end point.
 function searchConnection(start, end) {
-    results = [];
-    parents = new Map();
+  results = [];
 
-    // Check for sanitized input
-    if (!cities.includes(start) || !cities.includes(end)) {
-        console.log('Could not search for connection. Start or End City is not available.');
-        console.log('Start' + start + 'End: ' + end);
-        return [];
-    }
-    else if (start !== '' && start === end) {
-        console.log('Route makes no sense. Start and End are the same');
-        return [];
-    }
-  
-    // Run search / traverse
-    bfs(start, end);
-    // dfs(start, end);
+  // Check for sanitized input
+  if (!cities.includes(start) || !cities.includes(end)) {
+    console.log(
+      "Could not search for connection. Start or End City is not available."
+    );
+    console.log("Start" + start + "End: " + end);
+    return [];
+  } else if (start !== "" && start === end) {
+    console.log("Route makes no sense. Start and End are the same");
+    return [];
+  }
 
-    // Handle search result
-    console.log('the result is: ')
-    console.log(results);
+  // Run search / traverse
+  bfs(start, end);
+  // dfs(start, end);
 
-    return results;
+  // Handle search result
+  console.log("the result is: ");
+  console.log(results);
+
+  return results;
 }
 
-// // Setup search
-// const start = 'Stuttgart';
-// const end = 'Kassel';
-
-
 export { searchConnection };
-
-
