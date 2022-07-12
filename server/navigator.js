@@ -23,7 +23,7 @@ const routes = [
 const adjacencyList = new Map();
 
 // The parent for each node.
-const parents = new Map();
+let parents = new Map();
 
 // The search results.
 let results = [];
@@ -72,11 +72,11 @@ function bfs(start, target) {
     }
 }
 
-// Depth-first search (DFS)
+// Depth-first search (DFS) //TODO: Debug this and reconstruct the path of the results
 function dfs(start, target, visited = new Set()) {
     console.log(start);
     visited.add(start);
-
+  
     const connections = adjacencyList.get(start);
 
     for (const connection of connections) {
@@ -94,7 +94,7 @@ function dfs(start, target, visited = new Set()) {
 function reconstructPath(start, target){
     console.log('reconstruct path');
     const path = [target];
-
+   
     let node = target;
     while (node !== start) {
         let parent = parents.get(node);
@@ -102,16 +102,22 @@ function reconstructPath(start, target){
         node = parent;
     }
     results.push(path.reverse());
+    
 }
 
 // Search for train connections between start and end point.
 function searchConnection(start, end) {
-     results = [];
+    results = [];
+    parents = new Map();
 
     // Check for sanitized input
     if (!cities.includes(start) || !cities.includes(end)) {
         console.log('Could not search for connection. Start or End City is not available.');
         console.log('Start' + start + 'End: ' + end);
+        return [];
+    }
+    else if (start !== '' && start === end) {
+        console.log('Route makes no sense. Start and End are the same');
         return [];
     }
   

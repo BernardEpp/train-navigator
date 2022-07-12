@@ -4,7 +4,7 @@ This is the backend for the train connection search. The implementation is done 
 
 ## Test
 
-Unit tests are done with mocha and chai. To run them do:
+Tests are done with mocha and chai. To run them do:
 
 ```
 npm test
